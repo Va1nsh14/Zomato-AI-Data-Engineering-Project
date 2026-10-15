@@ -20,3 +20,13 @@ CREATE OR REPLACE FILE FORMAT ZOMATO.RAW.CSV_FMT
   ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE;   -- messy source rows (e.g. food.csv missing a
                                             -- trailing field) NULL-fill instead of aborting
 
+-- >>> EDIT <BUCKET> <<<
+-- Upload one CSV per folder:  raw/restaurants/  raw/users/  raw/food/  raw/menu/
+--                             raw/orders/  raw/order_items/  raw/reviews/
+CREATE OR REPLACE STAGE ZOMATO.RAW.ZOMATO_RAW_STAGE
+  STORAGE_INTEGRATION = ZOMATO_S3_INT
+  URL = 's3://<BUCKET>/raw/'
+  FILE_FORMAT = ZOMATO.RAW.CSV_FMT;
+
+-- Confirm Snowflake can see your files (should list the seven table folders).
+LIST @ZOMATO.RAW.ZOMATO_RAW_STAGE;
