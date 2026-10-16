@@ -39,4 +39,49 @@ CREATE OR REPLACE TABLE RAW.menu (
   menu_id STRING, r_id STRING, f_id STRING, cuisine STRING, price STRING
 );
 
+-- generated/orders.csv (clean, typed):
+CREATE OR REPLACE TABLE RAW.orders (
+  order_id          NUMBER,
+  order_timestamp   TIMESTAMP_NTZ,
+  order_date        DATE,
+  user_id           NUMBER,
+  r_id              NUMBER,
+  restaurant_city   STRING,
+  cuisine           STRING,
+  items_count       NUMBER,
+  sales_qty         NUMBER,
+  subtotal          NUMBER,
+  discount          NUMBER,
+  delivery_fee      NUMBER,
+  gst               NUMBER,
+  sales_amount      NUMBER,
+  currency          STRING,
+  payment_method    STRING,
+  order_status      STRING,
+  customer_rating   NUMBER,
+  delivery_time_min NUMBER
+);
+
+-- generated/order_items.csv (clean, typed):
+CREATE OR REPLACE TABLE RAW.order_items (
+  order_item_id NUMBER,
+  order_id      NUMBER,
+  r_id          NUMBER,
+  f_id          STRING,
+  price         NUMBER,
+  quantity      NUMBER,
+  line_amount   NUMBER
+);
+
+-- generated/reviews.csv (clean, typed) — free text for the AI layer:
+CREATE OR REPLACE TABLE RAW.reviews (
+  review_id     NUMBER,
+  order_id      NUMBER,
+  user_id       NUMBER,
+  restaurant_id NUMBER,
+  rating        NUMBER,
+  comment       STRING,
+  review_date   DATE
+);
+
 
