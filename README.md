@@ -6,12 +6,3 @@ Zomato/Food Delivery Dataset → Amazon S3 → Snowflake → dbt → Airflow →
 
 The dataset lands in an S3 data lake and flows into Snowflake through a storage integration, where dbt transforms it through medallion layers — RAW (Bronze) tables loaded via COPY INTO, cleaned STAGING (Silver) views, and business-ready MARTS (Gold) with dimensions, incremental facts, and aggregate marts. Apache Airflow orchestrates the whole pipeline as one daily DAG. On top of the warehouse sits an AI lane powered by OpenAI: LLM enrichment turns free-text reviews into structured, queryable columns; RAG lets you chat with your reviews; and text-to-SQL lets you query the warehouse in plain English. Streamlit serves the dashboards and AI apps.
 
-What gets built
-Layer	Where	What
-Source	data/ (local)	4 real dimension CSVs (restaurants, users, food, menu) + 3 generated fact files: 10M orders, ~23M order items, 300K free-text reviews
-Lake	Amazon S3	One bucket, raw/<table>/ folder per CSV
-Bronze	Snowflake ZOMATO.RAW	COPY INTO from S3 via a keyless storage integration
-Silver	Snowflake ZOMATO.STAGING	dbt staging views — clean, type, rename every source
-Gold	Snowflake ZOMATO.MARTS	Dimensions, incremental facts (MERGE), business marts + an SCD2 snapshot
-AI	Snowflake ZOMATO.AI	LLM-enriched reviews (sentiment/topic), RAG chat, text-to-SQL
-Orchestration	Airflow (Docker)	One daily DAG: load → transform → enrich → AI mart
